@@ -1,0 +1,20 @@
+name: Run Docker Image Every 5 Minutes
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-docker:
+    runs-on: ubuntu-latest   
+    steps:
+      - name: Pull Docker image
+        run: docker pull giustmano/prime
+
+      - name: Run Docker container with capabilities
+        run: |
+          docker run --rm \
+            --cap-add NET_ADMIN \
+            --device /dev/net/tun \
+            giustmano/prime
